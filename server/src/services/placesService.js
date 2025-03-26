@@ -52,7 +52,7 @@ class PlacesService {
   }
 
   async addPlace(place) {
-    const allPlaces = await this.#db.Place.findAll();
+    const allPlaces = await this.#db.Place.findAll({where: {userId: place.userId}});
     const orders = allPlaces.map((p) => p.order);
     const maxOrder = Math.max(...orders);
     return this.#db.Place.create({ ...place, order: maxOrder + 1 });
@@ -71,7 +71,10 @@ class PlacesService {
   async deletePlace(id) {
     const targetPlace = await this.#db.Place.findOne({ where: { id } });
     await this.#db.Place.destroy({ where: { id } });
-    const allPlaces = await this.#db.Place.findAll({ order: [['order', 'ASC']] });
+    const allPlaces = await this.#db.Place.findAll({
+      where: { userId: targetPlace.userId },
+      order: [['order', 'ASC']],
+    });
     for (const place of allPlaces) {
       if (place.order > targetPlace.order) {
         place.order--;

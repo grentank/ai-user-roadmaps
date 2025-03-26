@@ -1,24 +1,23 @@
-import { useEffect, useState, type JSX } from 'react';
-// import { usePlaces, usePlacesDispatch } from '../../entities/place/lib/context';
+import { useEffect, type JSX } from 'react';
 import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
-import placeService from '../../entities/place/api/service';
-import type { PlaceT } from '../../entities/place/model/types';
+import { changeSort, clearUserPlaces } from '../../features/roadmapSlice/slice';
+import { loadUserRoadmapThunk } from '../../features/roadmapSlice/thunks';
+import { useAppDispatch, useAppSelector } from '../../shared/lib/reduxHooks';
 import PlaceCard from '../../widgets/PlaceCard/PlaceCard';
 
 export default function RoadmapPage(): JSX.Element {
-  const [places, setPlaces] = useState<PlaceT[]>([]);
+  const places = useAppSelector((store) => store.roadmaps.orderedPlaces);
   const { userId } = useParams();
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    void placeService.getPlacesByUserId(Number(userId)).then((userPlaces) => setPlaces(userPlaces));
+    void dispatch(loadUserRoadmapThunk(Number(userId)));
+    return () => {
+      dispatch(clearUserPlaces());
+    };
   }, [userId]);
 
-  const [sort, setSort] = useState<{ key: 'order' | 'name'; order: string }>({
-    key: 'order',
-    order: 'asc',
-  });
-
-  const { key, order } = sort;
+  const { key, order } = useAppSelector((store) => store.roadmaps.sort);
 
   return (
     <Container>
@@ -28,7 +27,7 @@ export default function RoadmapPage(): JSX.Element {
           <ButtonGroup>
             <Button
               onClick={() => {
-                setSort({ key: 'order', order: order === 'asc' ? 'desc' : 'asc' });
+                dispatch(changeSort('order'));
               }}
               variant={key === 'order' ? 'secondary' : 'outline-secondary'}
             >
@@ -36,7 +35,7 @@ export default function RoadmapPage(): JSX.Element {
             </Button>
             <Button
               onClick={() => {
-                setSort({ key: 'name', order: order === 'asc' ? 'desc' : 'asc' });
+                dispatch(changeSort('name'));
               }}
               variant={key === 'name' ? 'secondary' : 'outline-secondary'}
             >

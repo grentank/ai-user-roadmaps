@@ -1,19 +1,16 @@
-import { useEffect, useState, type JSX } from 'react';
+import { useEffect, type JSX } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router';
-import type { UserWithPlacesT } from '../../entities/place/model/types';
-import userService from '../../entities/user/api/service';
+import { loadAllUsersThunk } from '../../features/roadmapSlice/thunks';
+import { useAppDispatch, useAppSelector } from '../../shared/lib/reduxHooks';
 import LoadingSpinner from '../../shared/ui/Loading/LoadingSpinner';
 
 const AllRoadmaps = (): JSX.Element => {
-  const [users, setUsers] = useState<UserWithPlacesT[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const users = useAppSelector((store) => store.roadmaps.users);
+  const isLoading = useAppSelector((store) => store.roadmaps.isLoadingUsers);
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    userService
-      .getUsers()
-      .then((backendUsers) => setUsers(backendUsers))
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
+    void dispatch(loadAllUsersThunk());
   }, []);
   return (
     <Container>

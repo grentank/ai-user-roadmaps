@@ -36,7 +36,7 @@ class PlacesController {
     try {
       const place = await this.#service.addPlace({
         ...req.body,
-        userId: res.locals.user.id,
+        // userId: res.locals.user.id,
       });
       res.status(201).json(place);
     } catch (error) {

@@ -15,11 +15,15 @@ export const userWithPlacesSchema = userSchema.extend({
   places: z.array(placeSchema),
 });
 
-export const addPlaceSchema = placeSchema.omit({
-  id: true,
-  order: true,
-  userId: true,
-  user: true,
-});
+export const addPlaceSchema = placeSchema
+  .omit({
+    id: true,
+    order: true,
+    // userId: true,
+    user: true,
+  })
+  .extend({
+    userId: z.string(),
+  });
 
 export default placeSchema;
