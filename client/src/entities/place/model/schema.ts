@@ -19,11 +19,11 @@ export const addPlaceSchema = placeSchema
   .omit({
     id: true,
     order: true,
-    // userId: true,
+    userId: true,
     user: true,
   })
-  .extend({
-    userId: z.string(),
-  });
+  // .extend({
+  //   userId: z.string(),
+  // });
 
 export default placeSchema;

@@ -52,7 +52,7 @@ class PlacesService {
   }
 
   async addPlace(place) {
-    const allPlaces = await this.#db.Place.findAll({where: {userId: place.userId}});
+    const allPlaces = await this.#db.Place.findAll({ where: { userId: place.userId } });
     const orders = allPlaces.map((p) => p.order);
     const maxOrder = Math.max(...orders);
     return this.#db.Place.create({ ...place, order: maxOrder + 1 });

@@ -46,7 +46,7 @@ export default function AddPlacePage(): JSX.Element {
           <Form.Control type="text" name="geo" placeholder="Введите гео (координаты или текст)" />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>Выбери пользователя</Form.Label>
           <Form.Select name="userId">
             {users.map((user) => (
@@ -55,7 +55,7 @@ export default function AddPlacePage(): JSX.Element {
               </option>
             ))}
           </Form.Select>
-        </Form.Group>
+        </Form.Group> */}
 
         <Button variant="primary" type="submit">
           Добавить

@@ -3,16 +3,6 @@ const bcrypt = require('bcrypt');
 class AuthService {
   async createAccount({ email, password, name }) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userWithTheSamePassword = await User.findOne({
-      where: {
-        hashedPassword,
-      },
-    });
-    if (userWithTheSamePassword) {
-      throw new Error(
-        `Такой пароль уже используется пользователем ${userWithTheSamePassword.email}`,
-      );
-    }
     const [createdUser, created] = await User.findOrCreate({
       where: {
         email,
@@ -32,8 +22,7 @@ class AuthService {
     });
     if (!foundUser) throw new Error('Ошибка входа. Такой почты не существует.');
     const isValidPassword = await bcrypt.compare(password, foundUser.hashedPassword);
-    if (!isValidPassword)
-      throw new Error(`Неверный пароль. Нужно: ${foundUser.hashedPassword}`);
+    if (!isValidPassword) throw new Error(`Неверный пароль. Нужно другой`);
     return foundUser.get();
   }
 }

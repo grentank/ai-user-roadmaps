@@ -1,7 +1,6 @@
 import { isAxiosError, type AxiosInstance } from 'axios';
 import { ZodError } from 'zod';
 import axiosInstance from '../../../shared/api';
-import type { UserT } from '../../user/model/types';
 import placeSchema from '../model/schema';
 import type { PlaceAddFormT, PlaceT } from '../model/types';
 
@@ -51,9 +50,9 @@ class PlaceService {
     }
   }
 
-  async createPlace(formData: PlaceAddFormT, userId: UserT['id']): Promise<PlaceT> {
+  async createPlace(formData: PlaceAddFormT): Promise<PlaceT> {
     try {
-      const response = await this.client.post('/places', { ...formData, userId });
+      const response = await this.client.post('/places', { ...formData });
       if (response.status !== 201) throw new Error('Неверный статус при добавлении (ожидался 201)');
       return placeSchema.parse(response.data);
     } catch (error) {

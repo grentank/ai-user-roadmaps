@@ -12,6 +12,7 @@ function QuestionTooltipButton({ place }: PlaceCardProps): JSX.Element {
   const [resp, setResp] = useState<string | null>(null); // Состояние для текста подсказки
   const [showTooltip, setShowTooltip] = useState(false); // Состояние для отображения тултипа
   const [isLoading, setIsLoading] = useState(false);
+  console.log('tooltip', place.id);
 
   // Обработчик клика по кнопке
   const handleClick = (): void => {

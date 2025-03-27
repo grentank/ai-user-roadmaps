@@ -4,7 +4,6 @@ const jwtConfig = require('../config/jwtConfig');
 
 module.exports = function verifyAccessToken(req, res, next) {
   try {
-    // Bearer aksdhjdsahjdfsahakdsfjfkads
     const accessToken = req.headers.authorization.split(' ')[1];
     const { user } = jwt.verify(
       accessToken,

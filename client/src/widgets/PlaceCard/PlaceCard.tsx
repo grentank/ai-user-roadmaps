@@ -1,12 +1,12 @@
-import { useState, type JSX } from 'react';
+import { memo, useState, type JSX } from 'react';
 import { Button, CloseButton } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import type { PlaceT } from '../../entities/place/model/types';
+import { deletePlaceThunk } from '../../features/roadmapSlice/thunks';
+import { useAppDispatch } from '../../shared/lib/reduxHooks';
 import ArrowDown from '../../shared/ui/icons/ArrowDown';
 import ArrowUp from '../../shared/ui/icons/ArrowUp';
 import QuestionTooltipButton from '../QuestionTooltipButton/QuestionTooltipButton';
-import { useAppDispatch } from '../../shared/lib/reduxHooks';
-import { deletePlaceThunk } from '../../features/roadmapSlice/thunks';
 
 type PlaceCardProps = {
   place: PlaceT;
@@ -15,7 +15,7 @@ type PlaceCardProps = {
 function PlaceCard({ place }: PlaceCardProps): JSX.Element {
   const [image, setImage] = useState<string>(place.image);
   const dispatch = useAppDispatch();
-
+  console.log(place.id);
   return (
     <Card
       className="bg-dark text-white position-relative"
@@ -33,9 +33,11 @@ function PlaceCard({ place }: PlaceCardProps): JSX.Element {
             {/* Кнопка с вопросительным знаком */}
             <QuestionTooltipButton place={place} />
             {/* Кнопка удаления */}
+
             <CloseButton
               onClick={() => dispatch(deletePlaceThunk(place.id))}
-            style={{ backgroundColor: 'white', padding: '7px' }} />
+              style={{ backgroundColor: 'white', padding: '7px' }}
+            />
           </div>
         </div>
 
@@ -68,3 +70,4 @@ function PlaceCard({ place }: PlaceCardProps): JSX.Element {
 }
 
 export default PlaceCard;
+// export default memo(PlaceCard);

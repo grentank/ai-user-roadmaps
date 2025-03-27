@@ -26,6 +26,6 @@ export const addPlaceThunk = createAsyncThunk(
   'roadmaps/addPlaceThunk',
   async (formData: FormData) => {
     const data = addPlaceSchema.parse(Object.fromEntries(formData));
-    return placeService.createPlace(data, Number(data.userId));
+    return placeService.createPlace(data);
   },
 );

@@ -1,4 +1,4 @@
-import { useEffect, type JSX } from 'react';
+import { useCallback, useEffect, useMemo, type JSX } from 'react';
 import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { changeSort, clearUserPlaces } from '../../features/roadmapSlice/slice';
@@ -12,12 +12,18 @@ export default function RoadmapPage(): JSX.Element {
   const dispatch = useAppDispatch();
   useEffect(() => {
     void dispatch(loadUserRoadmapThunk(Number(userId)));
+    console.log('useeffect', userId);
     return () => {
       dispatch(clearUserPlaces());
     };
   }, [userId]);
 
   const { key, order } = useAppSelector((store) => store.roadmaps.sort);
+  const obj = useMemo(() => ({ userId }), [userId]);
+  const deleteHandler = useCallback(() => {}, []);
+  
+  // const deleteHandler = () => {};
+  // const obj = { userId };
 
   return (
     <Container>
@@ -49,7 +55,7 @@ export default function RoadmapPage(): JSX.Element {
       <Row className="justify-content-center">
         {places.map((place) => (
           <Col xs={12} className="d-flex justify-content-center mb-4" key={place.name}>
-            <PlaceCard place={place} />
+            <PlaceCard deleteHandler={deleteHandler} obj={obj} place={place} />
           </Col>
         ))}
       </Row>

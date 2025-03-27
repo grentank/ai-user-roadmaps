@@ -3,12 +3,6 @@ const authService = require('../services/authService');
 const generateTokens = require('../utils/generateTokens');
 
 class AuthController {
-  #service;
-
-  constructor(service) {
-    this.#service = service;
-  }
-
   #sendTokens = (res, user) => {
     const { accessToken, refreshToken } = generateTokens({ user });
     return res
@@ -57,6 +51,6 @@ class AuthController {
   };
 }
 
-const authController = new AuthController(authService);
+const authController = new AuthController();
 
 module.exports = authController;

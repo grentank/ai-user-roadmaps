@@ -57,6 +57,7 @@ export const roadmapSlice = createSlice({
     },
     clearUserPlaces: (state) => {
       state.oneUserPlaces = [];
+      state.orderedPlaces = [];
     },
   },
   extraReducers: (builder) => {
@@ -80,8 +81,11 @@ export const roadmapSlice = createSlice({
         if (!targetPlace) return;
         state.oneUserPlaces = state.oneUserPlaces
           .filter((place) => place.id !== action.payload)
-          .toSorted((a, b) => a.order - b.order)
-          .map((place, index) => ({ ...place, order: index + 1 }));
+          .toSorted((a, b) => a.order - b.order);
+        for (let i = 0; i < state.oneUserPlaces.length; i++) {
+          state.oneUserPlaces[i].order = i + 1;
+        }
+        // .map((place, index) => ({ ...place, order: index + 1 }));
         applySort(state);
       })
       .addCase(addPlaceThunk.rejected, (state, action) => {

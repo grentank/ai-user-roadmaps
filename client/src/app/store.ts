@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import authReducer from '../features/auth/lib/authSlice';
 import roadmapReducer from '../features/roadmapSlice/slice';
 
 export const store = configureStore({
   reducer: {
     roadmaps: roadmapReducer,
-    // auth: authReducer,
+    auth: authReducer,
   },
 });
 
